@@ -7,7 +7,7 @@ pipeline {
 
         stage('Build docker image') {
             steps {  
-                sh 'docker build -t salmaalfinda/tugas-1:$BUILD_NUMBER .'
+                sh 'docker build -t salmaalfinda/tugasmagang1:$BUILD_NUMBER .'
             }
         }
         stage('Login to dockerhub') {
@@ -17,10 +17,14 @@ pipeline {
         }
         stage('Push image') {
             steps{
-                sh 'docker push salmaalfinda/tugas-1:$BUILD_NUMBER'
+                sh 'docker push salmaalfinda/tugasmagang1:$BUILD_NUMBER'
             }
         }
-
+        stage('Run') {
+            steps{
+                sh 'docker run --restart always -p 3010:3000 -d  salmaalfinda/tugasmagang1:$BUILD_NUMBER'
+            }
+        }
         
 }
 post {
