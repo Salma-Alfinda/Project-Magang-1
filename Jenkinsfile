@@ -22,7 +22,7 @@ pipeline {
         }
          stage('Run') {
             steps{
-                sh 'docker run -p 3000:3000 -d salmaalfinda/tugas-1:$BUILD_NUMBER'
+                sh 'docker run -p 3020:3000 -d salmaalfinda/tugas-1:$BUILD_NUMBER'
             }
         }
         
