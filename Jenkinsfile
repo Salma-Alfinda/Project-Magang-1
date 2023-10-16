@@ -10,16 +10,22 @@ pipeline {
                 sh 'docker build -t salmaalfinda/tugas1:$BUILD_NUMBER .'
             }
         }
-        stage('login to dockerhub') {
+        stage('Login to dockerhub') {
             steps{
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
-        stage('push image') {
+        stage('Push image') {
             steps{
                 sh 'docker push salmaalfinda/tugas1:$BUILD_NUMBER'
             }
         }
+         stage('Run') {
+            steps{
+                sh 'docker run -p 3000:3000 -d salmaalfinda/tugas1:$BUILD_NUMBER'
+            }
+        }
+        
 }
 post {
         always {
