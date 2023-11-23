@@ -1,10 +1,28 @@
-name: Must run on custom runner
+name: Build and Push to GHCR
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  init:
-    runs-on: self-hosted
+  build-push:
+    runs-on: ubuntu-latest
+
     steps:
-      - run: echo 'Hello Everyone'
-      - run: echo $HOSTNAME
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Build Docker Image
+        run: docker build -t ghcr.io/salma-alfinda/tugasmagang1:${{ github.run_number }} .
+
+      - name: Log in ke GitHub Container Registry (GHCR)
+        run: docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GATHER_TOKEN }}
+
+      - name: Push Docker Image ke GHCR
+        run: docker push ghcr.io/salma-alfinda/tugasmagang1:${{ github.run_number }}
